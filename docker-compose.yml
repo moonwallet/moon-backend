@@ -1,19 +1,19 @@
 version: '3.7'
 
 services:
-  app_db:
-    container_name: app_db
-    hostname: app_db
+  moon_db:
+    container_name: moon_db
+    hostname: moon_db
     image: library/postgres:16.3
     environment:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=app
       - POSTGRES_DB=app
     volumes:
-      - app_db_data:/var/lib/postgresql/data
+      - moon_db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "55432:5432"
 
 volumes:
-  app_db_data:
+  moon_db_data:
     driver: "local"
