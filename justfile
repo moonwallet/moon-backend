@@ -14,10 +14,10 @@ downgrade *args:
   poetry run alembic downgrade {{args}}
 
 ruff *args:
-  poetry run ruff check {{args}} src
+  poetry run ruff check {{args}} src alembic
 
 lint:
-  poetry run ruff format src
+  poetry run ruff format src alembic
   just ruff --fix
 
 # docker

@@ -6,9 +6,9 @@ Create Date: 2024-06-13 03:07:25.215960
 
 """
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "8a5d18123605"
@@ -29,9 +29,7 @@ def upgrade() -> None:
         ),
         sa.Column("referrer_telegram_id", sa.String(), nullable=False),
         sa.Column("code", sa.String(), nullable=False),
-        sa.Column(
-            "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
-        ),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id", name=op.f("moon_invite_code_pkey")),
         sa.UniqueConstraint("code", name=op.f("moon_invite_code_code_key")),
@@ -50,9 +48,7 @@ def upgrade() -> None:
         ),
         sa.Column("invite_id", sa.Integer(), nullable=False),
         sa.Column("referee_telegram_id", sa.String(), nullable=False),
-        sa.Column(
-            "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
-        ),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
             ["invite_id"],
@@ -60,9 +56,7 @@ def upgrade() -> None:
             name=op.f("moon_invite_invite_id_fkey"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("moon_invite_pkey")),
-        sa.UniqueConstraint(
-            "referee_telegram_id", name=op.f("moon_invite_referee_telegram_id_key")
-        ),
+        sa.UniqueConstraint("referee_telegram_id", name=op.f("moon_invite_referee_telegram_id_key")),
     )
     # ### end Alembic commands ###
 
