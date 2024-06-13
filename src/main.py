@@ -3,12 +3,12 @@ from typing import AsyncGenerator
 
 import sentry_sdk
 from fastapi import FastAPI
-from redis.asyncio import Redis, ConnectionPool
+from redis.asyncio import ConnectionPool, Redis
 from starlette.middleware.cors import CORSMiddleware
 
 from src import redis
-from src.bot.telegram.app import set_webhook, moon_app
 from src.bot.router import router as bot_router
+from src.bot.telegram.app import moon_app, set_webhook
 from src.config import app_configs, settings
 
 

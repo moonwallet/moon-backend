@@ -28,9 +28,7 @@ metadata = MetaData(naming_convention=DB_NAMING_CONVENTION)
 moon_invite_code = Table(
     "moon_invite_code",
     metadata,
-    Column(
-        "id", Integer, Identity(always=True, start=1, increment=1), primary_key=True
-    ),
+    Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
     Column("referrer_telegram_id", String, nullable=False, unique=True),
     Column("code", String, nullable=False, unique=True),
     Column("created_at", DateTime, server_default=func.now(), nullable=False),
@@ -40,9 +38,7 @@ moon_invite_code = Table(
 moon_invite = Table(
     "moon_invite",
     metadata,
-    Column(
-        "id", Integer, Identity(always=True, start=1, increment=1), primary_key=True
-    ),
+    Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
     Column("invite_id", Integer, ForeignKey("moon_invite_code.id"), nullable=False),
     Column("referee_telegram_id", String, nullable=False, unique=True),
     Column("created_at", DateTime, server_default=func.now(), nullable=False),

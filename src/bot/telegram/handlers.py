@@ -28,14 +28,22 @@ async def start(update: telegram.Update, context: CallbackContext):
 
     text = (
         "Welcome to Moon - Telegram wallet for Solana memecoins.\n\n"
-        "We are going live in July. Meanwhile, join our Telegram group for the latest updates and the warmest memecoin fam 😍.\n\n"
-        "P.S. Invite your friends to get an exclusive 50% revenue share! (offer is only available at the pre-launch stage"
+        "We are going live in July. Meanwhile, "
+        "join our Telegram group for the latest updates "
+        "and the warmest memecoin fam 😍.\n\n"
+        "P.S. Invite your friends to get an exclusive 50% revenue share! "
+        "(offer is only available at the pre-launch stage"
     )
 
     buttons = [
         [InlineKeyboardButton("Join Telegram Сommunity", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
-        [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
+        [
+            InlineKeyboardButton(
+                "🎁 Invite friends - get 50% from their fees",
+                callback_data="get_referrals",
+            )
+        ],
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
 

@@ -3,9 +3,9 @@ from datetime import timedelta
 import telegram
 from telegram.ext import ApplicationBuilder
 
-from src.config import settings
 from src.bot.config import moon_config
 from src.bot.telegram import handlers
+from src.config import settings
 from src.redis import RedisData, get_by_key, set_redis_key
 
 moon_app = ApplicationBuilder().token(moon_config.MOON_TELEGRAM_BOT_TOKEN).updater(None).build()
