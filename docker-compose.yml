@@ -14,6 +14,13 @@ services:
     ports:
       - "55432:5432"
 
+  moon_redis:
+    container_name: moon_redis
+    hostname: moon_redis
+    image: redis/redis-stack:latest
+    ports:
+      - "56379:6379"
+
 volumes:
   moon_db_data:
     driver: "local"

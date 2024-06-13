@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import PostgresDsn, model_validator
+from pydantic import PostgresDsn, RedisDsn, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.constants import Environment
@@ -14,11 +14,12 @@ class CustomBaseSettings(BaseSettings):
 
 class Config(CustomBaseSettings):
     DATABASE_URL: PostgresDsn
-
-    SITE_DOMAIN: str = "myapp.com"
+    REDIS_URL: RedisDsn
+    REDIS_CONNECTION_POOL_SIZE: int = 16
 
     ENVIRONMENT: Environment = Environment.PRODUCTION
 
+    TELEGRAM_SECRET_TOKEN: str
     SENTRY_DSN: str | None = None
 
     CORS_ORIGINS: list[str]
