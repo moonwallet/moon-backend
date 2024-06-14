@@ -12,6 +12,7 @@ class CustomBaseSettings(BaseSettings):
 
 class Config(CustomBaseSettings):
     DATABASE_URL: PostgresDsn
+    DATABASE_ASYNC_URL: PostgresDsn
     REDIS_URL: RedisDsn
     REDIS_CONNECTION_POOL_SIZE: int = 16
 
