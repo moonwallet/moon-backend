@@ -2,9 +2,10 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
-from src.bot import service
+from src.bot.telegram.utils import _prepare_twitter_link
 from src.bot.config import moon_config
 from src.database import open_db_connection
+from src.bot import service
 
 
 async def start(update: telegram.Update, context: CallbackContext):
@@ -28,22 +29,13 @@ async def start(update: telegram.Update, context: CallbackContext):
 
     text = (
         "Welcome to Moon - Telegram wallet for Solana memecoins.\n\n"
-        "We are going live in July. Meanwhile, "
-        "join our Telegram group for the latest updates "
-        "and the warmest memecoin fam 😍.\n\n"
-        "P.S. Invite your friends to get an exclusive 50% revenue share! "
-        "(offer is only available at the pre-launch stage"
+        "We are going live in July. Meanwhile, invite your friends to get an exclusive 🔥 50% 🔥 revenue share!"
     )
 
     buttons = [
         [InlineKeyboardButton("Join Telegram Сommunity", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
-        [
-            InlineKeyboardButton(
-                "🎁 Invite friends - get 50% from their fees",
-                callback_data="get_referrals",
-            )
-        ],
+        [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
 
@@ -81,18 +73,21 @@ async def get_referrals(update: telegram.Update, context: CallbackContext) -> No
     text = (
         f"*Your referral link:* `{invite_link}`\n"
         f"*Your referrals:* {referrals_count}\n\n"
-        "Refer your friends and earn 50% of their fees\\. \n"
-        "Help Moon to build the community and start receiving rewards once we launch in July\\."
+        "Refer your friends and get an exclusive 🔥 50% 🔥 revenue share\\. \n\n"
+        "You'll start receiving rewards once we launch in July\\."
     )
     buttons = [
         [
             InlineKeyboardButton(
-                "Share my Ref",
+                "Share with Telegram Contacts",
                 switch_inline_query=(
-                    "\nJoin Moon community and get early access "
-                    f"to a Telegram Wallet for Solana Memecoins: {invite_link}"
+                    "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n"
+                    f"{invite_link}"
                 ),
             )
+        ],
+        [
+            InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
         ],
         [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],
@@ -124,8 +119,8 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
         text = (
             f"*Your referral link:* `{invite_link}`\n"
             f"*Your referrals:* {user_invite['count']}\n\n"
-            "Refer your friends and earn 50% of their fees\\. \n"
-            "Help Moon to build the community and start receiving rewards once we launch in July\\."
+            "Refer your friends and get an exclusive 🔥 50% 🔥 revenue share\\. \n\n"
+            "You'll start receiving rewards once we launch in July.\\."
         )
         try:
             await query.edit_message_caption(
