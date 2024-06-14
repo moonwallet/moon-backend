@@ -1,8 +1,9 @@
 version: '3.7'
 
 services:
-  app:
-    container_name: app
+  moon:
+    container_name: moon
+    hostname: moon
     image: app
     env_file:
       - .env
