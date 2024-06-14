@@ -7,10 +7,14 @@ services:
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "8001:8000"
     build:
       context: .
       dockerfile: Dockerfile.prod
     command:
       - entrypoints/gunicorn.sh
 
+networks:
+  default:
+    external: true
+    name: dappsheriff
