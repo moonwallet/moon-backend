@@ -25,8 +25,8 @@ DATABASE_URL = str(settings.DATABASE_URL)
 engine = create_async_engine(DATABASE_URL)
 metadata = MetaData(naming_convention=DB_NAMING_CONVENTION)
 
-moon_invite_code = Table(
-    "moon_invite_code",
+tg_invite_code = Table(
+    "tg_invite_code",
     metadata,
     Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
     Column("referrer_telegram_id", String, nullable=False, unique=True),
@@ -35,11 +35,11 @@ moon_invite_code = Table(
     Column("updated_at", DateTime, onupdate=func.now()),
 )
 
-moon_invite = Table(
-    "moon_invite",
+tg_invite = Table(
+    "tg_invite",
     metadata,
     Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
-    Column("invite_id", Integer, ForeignKey("moon_invite_code.id"), nullable=False),
+    Column("invite_id", Integer, ForeignKey("tg_invite_code.id"), nullable=False),
     Column("referee_telegram_id", String, nullable=False, unique=True),
     Column("created_at", DateTime, server_default=func.now(), nullable=False),
     Column("updated_at", DateTime, onupdate=func.now()),

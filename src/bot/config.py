@@ -10,7 +10,7 @@ class MoonConfig(CustomBaseSettings):
 
     @property
     def moon_telegram_webhook_url(self) -> str:
-        return f"{self.MOON_WEBHOOK_DOMAIN}/moon/telegram/" f"{self.MOON_WEBHOOK_RANDOM_PATH}/webhook"
+        return f"{self.MOON_WEBHOOK_DOMAIN}/tg/{self.MOON_WEBHOOK_RANDOM_PATH}/webhook"
 
 
 moon_config = MoonConfig()

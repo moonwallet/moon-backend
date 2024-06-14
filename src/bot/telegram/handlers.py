@@ -2,10 +2,10 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
-from src.bot.telegram.utils import _prepare_twitter_link
-from src.bot.config import moon_config
-from src.database import open_db_connection
 from src.bot import service
+from src.bot.config import moon_config
+from src.bot.telegram.utils import _prepare_twitter_link
+from src.database import open_db_connection
 
 
 async def start(update: telegram.Update, context: CallbackContext):
@@ -81,8 +81,7 @@ async def get_referrals(update: telegram.Update, context: CallbackContext) -> No
             InlineKeyboardButton(
                 "Share with Telegram Contacts",
                 switch_inline_query=(
-                    "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n"
-                    f"{invite_link}"
+                    "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n" f"{invite_link}"
                 ),
             )
         ],
