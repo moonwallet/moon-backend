@@ -6,7 +6,7 @@ from src.bot.config import moon_config
 from src.bot.telegram import service as telegram_service
 from src.dependencies import valid_tg_secret_token
 
-router = APIRouter(prefix="/moon/tg")
+router = APIRouter(prefix="/tg")
 
 
 @router.post(
