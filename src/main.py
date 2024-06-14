@@ -4,7 +4,6 @@ from typing import AsyncGenerator
 import sentry_sdk
 from fastapi import FastAPI
 from redis.asyncio import ConnectionPool, Redis
-from starlette.middleware.cors import CORSMiddleware
 
 from src import redis
 from src.bot.router import router as bot_router
@@ -35,15 +34,6 @@ async def lifespan(_application: FastAPI) -> AsyncGenerator:
 
 
 app = FastAPI(**app_configs, lifespan=lifespan)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_origin_regex=settings.CORS_ORIGINS_REGEX,
-    allow_credentials=True,
-    allow_methods=("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"),
-    allow_headers=settings.CORS_HEADERS,
-)
 
 if settings.ENVIRONMENT.is_deployed:
     sentry_sdk.init(
