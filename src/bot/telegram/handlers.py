@@ -119,7 +119,7 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
             f"*Your referral link:* `{invite_link}`\n"
             f"*Your referrals:* {user_invite['count']}\n\n"
             "Refer your friends and get an exclusive 🔥 50% 🔥 revenue share\\. \n\n"
-            "You'll start receiving rewards once we launch in July.\\."
+            "You'll start receiving rewards once we launch in July\\."
         )
         try:
             await query.edit_message_caption(
