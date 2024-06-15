@@ -33,9 +33,9 @@ async def start(update: telegram.Update, context: CallbackContext):
     )
 
     buttons = [
-        [InlineKeyboardButton("Join Telegram Сommunity", url="https://t.me/moon_wallet_xyz")],
-        [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
         [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
+        [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
+        [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
 
