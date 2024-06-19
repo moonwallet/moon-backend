@@ -17,6 +17,7 @@ moon_app.add_handler(telegram.ext.MessageHandler(telegram.ext.filters.VIDEO, han
 
 
 async def set_webhook():
+    return
     rate_limit_key = "moon:tg:webhook"
 
     await set_redis_key(

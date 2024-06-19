@@ -1,8 +1,11 @@
+from typing import Any
+
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncConnection
 
-from src.database import fetch_one, tg_invite, tg_invite_code
+from src.bot.schemas import TgUserCreate
+from src.database import execute, fetch_one, tg_invite, tg_invite_code, tg_user
 from src.utils import generate_random_alphanum
 
 
@@ -18,7 +21,7 @@ async def get_invite(
     elif code:
         filters.append(tg_invite_code.c.code == code)
 
-    select_query = tg_invite_code.select().where(*filters)
+    select_query = select(tg_invite_code).where(*filters)
 
     return await fetch_one(select_query, db_connection)
 
@@ -38,10 +41,10 @@ async def create_user_invite(
 
 
 async def get_invited_user(
-    invited_telegram: str,
+    invited_telegram_id: str,
     db_connection: AsyncConnection,
 ):
-    select_query = select(tg_invite).where(tg_invite.c.referee_telegram_id == invited_telegram)
+    select_query = select(tg_invite).where(tg_invite.c.referee_telegram_id == invited_telegram_id)
 
     return await fetch_one(select_query, db_connection)
 
@@ -72,8 +75,8 @@ async def count_invited_users(
 
 async def get_invite_with_count(
     referrer_telegram_id: str,
-    db_connection: AsyncConnection,
-) -> dict[str, int] | None:
+    db_connection: AsyncConnection = None,
+) -> dict[str, Any] | None:
     select_query = (
         select(
             tg_invite_code.c.code,
@@ -85,3 +88,31 @@ async def get_invite_with_count(
     )
 
     return await fetch_one(select_query, db_connection)
+
+
+async def get_telegram_user_by_id(
+    telegram_id: str,
+    db_connection: AsyncConnection,
+):
+    select_query = select(tg_user).where(tg_user.c.telegram_id == telegram_id)
+
+    return await fetch_one(select_query, db_connection)
+
+
+async def insert_telegram_user(
+    user_data: TgUserCreate,
+    db_connection: AsyncConnection = None,
+):
+    insert_query = insert(tg_user).values(user_data.model_dump())
+
+    return await execute(insert_query, db_connection, commit_after=True)
+
+
+async def update_telegram_user(
+    telegram_id: str,
+    data: dict[str, Any],
+    db_connection: AsyncConnection = None,
+):
+    update_query = tg_user.update().where(tg_user.c.telegram_id == telegram_id).values(data)
+
+    return await execute(update_query, db_connection, commit_after=True)

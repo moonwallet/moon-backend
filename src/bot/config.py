@@ -8,6 +8,8 @@ class MoonConfig(CustomBaseSettings):
     MOON_BOT_USERNAME: str = "moonWallet_solbot"
     MOON_START_VIDEO_URL: str
 
+    UPDATE_USER_DATA_ON_INTERACTION: bool = True
+
     @property
     def moon_telegram_webhook_url(self) -> str:
         return f"{self.MOON_WEBHOOK_DOMAIN}/tg/{self.MOON_WEBHOOK_RANDOM_PATH}/webhook"
