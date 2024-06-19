@@ -13,6 +13,11 @@ class CustomBaseSettings(BaseSettings):
 class Config(CustomBaseSettings):
     DATABASE_URL: PostgresDsn
     DATABASE_ASYNC_URL: PostgresDsn
+    DATABASE_POOL_SIZE: int = 16
+    DATABASE_POOL_MAX_OVERFLOW: int = 10
+    DATABASE_POOL_TTL: int = 60 * 20  # 20 minutes
+    DATABASE_POOL_PRE_PING: bool = True
+
     REDIS_URL: RedisDsn
     REDIS_CONNECTION_POOL_SIZE: int = 16
 
