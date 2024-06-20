@@ -17,6 +17,8 @@ class MoonConfig(CustomBaseSettings):
 
     UPDATE_USER_DATA_ON_INTERACTION: bool = True
 
+    SUPPORT_CHAT_LINK: str
+
     @property
     def moon_telegram_webhook_url(self) -> str:
         return f"{self.WEBHOOK_DOMAIN}/tg/{self.WEBHOOK_RANDOM_PATH}/webhook"

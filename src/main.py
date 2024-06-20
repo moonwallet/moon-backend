@@ -6,8 +6,8 @@ from fastapi import FastAPI
 from redis.asyncio import ConnectionPool, Redis
 
 from src import redis
+from src.bot.app import moon_app, set_webhook
 from src.bot.router import router as bot_router
-from src.bot.telegram.app import moon_app, set_webhook
 from src.config import app_configs, settings
 
 

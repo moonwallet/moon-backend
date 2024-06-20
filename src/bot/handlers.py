@@ -1,12 +1,12 @@
 import asyncio
 import logging
 
+import sentry_sdk
 import telegram
 from telegram.ext import CallbackContext
 
-from src.bot import service
+from src.bot import service, utils
 from src.bot.config import moon_config
-from src.bot.telegram import utils
 from src.database import open_db_connection
 
 logger = logging.getLogger(__name__)
@@ -112,3 +112,16 @@ async def echo_messages(update: telegram.Update, context: CallbackContext) -> No
     print(update.message.text)
     print(update.message.chat_id)
     print(update.message.message_thread_id)
+
+
+async def send_error_message(update: telegram.Update, context: CallbackContext) -> None:
+    sentry_sdk.capture_exception(context.error)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        reply_to_message_id=update.effective_message.message_id,
+        text=(
+            f"Sorry, something went wrong. "
+            f"Please retry after some time or contact the developers in the chat: {moon_config.SUPPORT_CHAT_LINK}"
+        ),
+    )
