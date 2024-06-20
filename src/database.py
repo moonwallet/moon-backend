@@ -12,6 +12,7 @@ from sqlalchemy import (
     Select,
     String,
     Table,
+    UniqueConstraint,
     Update,
     func,
 )
@@ -29,6 +30,20 @@ engine = create_async_engine(
     pool_pre_ping=settings.DATABASE_POOL_PRE_PING,
 )
 metadata = MetaData(naming_convention=DB_NAMING_CONVENTION)
+
+tg_user = Table(
+    "tg_user",
+    metadata,
+    Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
+    Column("telegram_id", String, nullable=False),
+    Column("chat_id", String, nullable=False),
+    Column("username", String),
+    Column("first_name", String),
+    Column("last_name", String),
+    Column("created_at", DateTime, server_default=func.now(), nullable=False),
+    Column("updated_at", DateTime, onupdate=func.now()),
+    UniqueConstraint("chat_id", "telegram_id", name="tg_user_telegram_id_chat_id_key"),
+)
 
 tg_invite_code = Table(
     "tg_invite_code",
