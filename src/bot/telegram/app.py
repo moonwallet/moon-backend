@@ -8,16 +8,16 @@ from src.bot.telegram import handlers
 from src.config import settings
 from src.redis import RedisData, set_redis_key
 
-moon_app = ApplicationBuilder().token(moon_config.MOON_TELEGRAM_BOT_TOKEN).updater(None).build()
+moon_app = ApplicationBuilder().token(moon_config.TELEGRAM_BOT_TOKEN).updater(None).build()
 
 # Register handlers
 moon_app.add_handler(telegram.ext.CommandHandler("start", handlers.start))
 moon_app.add_handler(telegram.ext.CallbackQueryHandler(handlers.query_buttons))
-moon_app.add_handler(telegram.ext.MessageHandler(telegram.ext.filters.VIDEO, handlers.echo_videos))
+# moon_app.add_handler(telegram.ext.MessageHandler(telegram.ext.filters.VIDEO, handlers.echo_videos))
+# moon_app.add_handler(telegram.ext.MessageHandler(None, handlers.echo_messages))
 
 
 async def set_webhook():
-    return
     rate_limit_key = "moon:tg:webhook"
 
     await set_redis_key(

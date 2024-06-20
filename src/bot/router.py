@@ -10,7 +10,7 @@ router = APIRouter(prefix="/tg")
 
 
 @router.post(
-    f"/{moon_config.MOON_WEBHOOK_RANDOM_PATH}/webhook",
+    f"/{moon_config.WEBHOOK_RANDOM_PATH}/webhook",
     dependencies=[Depends(valid_tg_secret_token)],
 )
 async def telegram_webhook(update: dict[str, Any]) -> dict[str, bool]:

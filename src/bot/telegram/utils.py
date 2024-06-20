@@ -10,7 +10,9 @@ from src.bot.config import moon_config
 from src.bot.schemas import TgUserCreate
 
 
-async def register_user(db_connection: AsyncConnection, update: telegram.Update, context: CallbackContext) -> bool:
+async def register_user(
+    db_connection: AsyncConnection, update: telegram.Update, context: CallbackContext
+) -> dict[str, bool] | None:
     """Register user in the database. Return True if user is created."""
     user_id = str(update.effective_user.id)
     if await service.get_telegram_user_by_id(user_id, db_connection):
@@ -24,7 +26,7 @@ async def register_user(db_connection: AsyncConnection, update: telegram.Update,
                 },
             )
 
-        return False
+        return None
 
     await service.insert_telegram_user(
         TgUserCreate(
@@ -42,14 +44,37 @@ async def register_user(db_connection: AsyncConnection, update: telegram.Update,
         user_invite = await service.get_invite(referrer_telegram_id=user_id, db_connection=db_connection)
 
     if not context.args:  # no invite code
-        return True
+        return {
+            "used_invite": False,
+        }
 
     invite_code = context.args[0]
     if user_invite["code"] == invite_code:  # is self-invite
-        return True
+        return {
+            "used_invite": True,
+            "self_invite": True,
+            "invalid_invite": True,
+        }
 
-    if invite := await service.get_invite(code=invite_code, db_connection=db_connection):
+    if invite := await service.get_invite_with_count(code=invite_code, db_connection=db_connection):
         await service.invite_user(invite["id"], user_id, db_connection)
+
+        inviter_account = await service.get_telegram_user_by_id(invite["referrer_telegram_id"], db_connection)
+        inviter_username = (
+            f"@{inviter_account['username']}" if inviter_account["username"] else invite["referrer_telegram_id"]
+        )
+
+        return {
+            "used_invite": True,
+            "invited_by": inviter_username,
+            "total_invites": invite["count"] + 1,
+        }
+
+    return {
+        "used_invite": True,
+        "invalid_invite": True,
+        "invite_code": invite_code,
+    }
 
 
 def prepare_referrals_stat_text(
@@ -65,7 +90,7 @@ def prepare_referrals_stat_text(
 
 
 def prepare_invite_link(invite_code: str) -> str:
-    return f"https://t.me/{moon_config.MOON_BOT_USERNAME}?start={invite_code}"
+    return f"https://t.me/{moon_config.BOT_USERNAME}?start={invite_code}"
 
 
 def prepare_start_text() -> str:

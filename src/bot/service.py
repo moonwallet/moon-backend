@@ -74,17 +74,27 @@ async def count_invited_users(
 
 
 async def get_invite_with_count(
-    referrer_telegram_id: str,
+    *,
+    code: str = None,
+    referrer_telegram_id: str = None,
     db_connection: AsyncConnection = None,
 ) -> dict[str, Any] | None:
+    filters = []
+    if code:
+        filters.append(tg_invite_code.c.code == code)
+    if referrer_telegram_id:
+        filters.append(tg_invite_code.c.referrer_telegram_id == referrer_telegram_id)
+
     select_query = (
         select(
+            tg_invite_code.c.id,
             tg_invite_code.c.code,
+            tg_invite_code.c.referrer_telegram_id,
             func.count(tg_invite.c.id).label("count"),
         )
         .select_from(tg_invite_code.outerjoin(tg_invite, tg_invite_code.c.id == tg_invite.c.invite_id))
-        .where(tg_invite_code.c.referrer_telegram_id == referrer_telegram_id)
-        .group_by(tg_invite_code.c.code)
+        .where(*filters)
+        .group_by(tg_invite_code.c.code, tg_invite_code.c.id, tg_invite_code.c.referrer_telegram_id)
     )
 
     return await fetch_one(select_query, db_connection)
@@ -105,7 +115,7 @@ async def insert_telegram_user(
 ):
     insert_query = insert(tg_user).values(user_data.model_dump())
 
-    return await execute(insert_query, db_connection, commit_after=True)
+    return await execute(insert_query, db_connection, commit_after=False)
 
 
 async def update_telegram_user(

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 import telegram
@@ -18,9 +19,12 @@ async def start(update: telegram.Update, context: CallbackContext):
     finally:
         await db_connection.close()
 
+    if created:
+        asyncio.create_task(notify_devs(created, update, context))
+
     await context.bot.send_video(
         chat_id=update.effective_chat.id,
-        video=moon_config.MOON_START_VIDEO_URL,
+        video=moon_config.START_VIDEO_URL,
         caption=utils.prepare_start_text(),
         reply_markup=utils.prepare_start_buttons(),
     )
@@ -51,7 +55,7 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
 
 
 async def get_referrals(update: telegram.Update, context: CallbackContext) -> None:
-    user_invite = await service.get_invite_with_count(str(update.effective_user.id))
+    user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
     invite_link = utils.prepare_invite_link(user_invite["code"])
     text = utils.prepare_referrals_stat_text(user_invite["count"], invite_link)
 
@@ -65,7 +69,7 @@ async def get_referrals(update: telegram.Update, context: CallbackContext) -> No
 
 
 async def refresh_user_stats(query: telegram.CallbackQuery, update: telegram.Update):
-    user_invite = await service.get_invite_with_count(str(update.effective_user.id))
+    user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
     invite_link = utils.prepare_invite_link(user_invite["code"])
     text = utils.prepare_referrals_stat_text(user_invite["count"], invite_link)
     try:
@@ -79,6 +83,32 @@ async def refresh_user_stats(query: telegram.CallbackQuery, update: telegram.Upd
             raise
 
 
+async def notify_devs(creation_data: dict[str, bool], update: telegram.Update, context: CallbackContext):
+    base_text = f"*New user created:* @{update.effective_user.username}\n"
+    if creation_data["used_invite"]:
+        if creation_data.get("invited_by"):
+            base_text += f"\n\\-*Invited by:* {creation_data['invited_by']}"
+            if creation_data.get("total_invites"):
+                base_text += f"\n\\-*Total invitees:* {creation_data['total_invites']}"
+        if creation_data.get("self_invite"):
+            base_text += "\n\\- Tried to self\\-invite"
+        elif creation_data.get("invalid_invite"):
+            base_text += f"\n\\- Invalid invite code: {creation_data.get('invite_code')}"
+
+    await context.bot.send_message(
+        chat_id=moon_config.NOTIFICATIONS_CHAT_ID,
+        reply_to_message_id=moon_config.NOTIFICATIONS_CHAT_TOPIC_ID,
+        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
+        text=base_text,
+    )
+
+
 async def echo_videos(update: telegram.Update, context: CallbackContext) -> None:
     print(update.message.video.file_id)
     print(update.message.video.file_unique_id)
+
+
+async def echo_messages(update: telegram.Update, context: CallbackContext) -> None:
+    print(update.message.text)
+    print(update.message.chat_id)
+    print(update.message.message_thread_id)
