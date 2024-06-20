@@ -1,12 +1,11 @@
 import asyncio
 import logging
 
-from telegram.error import TelegramError
 from sqlalchemy.ext.asyncio import AsyncConnection
+from telegram.error import TelegramError
 
 from src.bot.app import moon_app
-from src.database import fetch_all, tg_user, execute, open_db_connection
-
+from src.database import execute, fetch_all, open_db_connection, tg_user
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
