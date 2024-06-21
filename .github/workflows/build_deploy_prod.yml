@@ -9,7 +9,7 @@ on:
 jobs:
   deploy_moon:
     name: Deploy to Moon Prod
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       AWS_INSTANCE_SG_ID: ${{ secrets.AWS_DEPLOY_SG_ID }}
     steps:
