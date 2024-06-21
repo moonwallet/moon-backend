@@ -8,7 +8,6 @@ on:
 
 jobs:
   deploy_moon:
-    needs: build_and_push
     name: Deploy to Moon Prod
     runs-on: self-hosted
     env:
