@@ -1,0 +1,52 @@
+name: Build and Deploy Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_moon:
+    name: Deploy to Moon Prod
+    runs-on: ubuntu-latest
+    env:
+      AWS_INSTANCE_SG_ID: ${{ secrets.AWS_DEPLOY_SG_ID }}
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: get runner ip address
+        id: ip
+        uses: haythem/public-ip@v1.2
+      - name: whitelist runner ip address
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd moon-backend
+            docker compose -f docker-compose.prod.yml build
+            docker compose -f docker-compose.prod.yml kill
+            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml exec moon alembic upgrade head
+
+      - name: Remove runner IP from whitelist
+        if: always()
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id $AWS_INSTANCE_SG_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
