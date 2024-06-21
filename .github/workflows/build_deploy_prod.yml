@@ -38,10 +38,10 @@ jobs:
           port: 22
           script: |
             cd moon-backend
-            docker-compose -f docker-compose.prod.yml build
-            docker-compose -f docker-compose.prod.yml kill
-            docker-compose -f docker-compose.prod.yml up -d
-            docker-compose -f docker-compose.prod.yml exec moon alembic upgrade head
+            docker compose -f docker-compose.prod.yml build
+            docker compose -f docker-compose.prod.yml kill
+            docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml exec moon alembic upgrade head
 
       - name: Remove runner IP from whitelist
         if: always()
