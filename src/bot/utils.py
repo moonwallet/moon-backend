@@ -63,6 +63,7 @@ async def register_user(
         inviter_username = (
             f"@{inviter_account['username']}" if inviter_account["username"] else invite["referrer_telegram_id"]
         )
+        inviter_username = inviter_username.replace("_", "\\_")
 
         return {
             "used_invite": True,
