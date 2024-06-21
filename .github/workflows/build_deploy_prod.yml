@@ -11,7 +11,7 @@ jobs:
     name: Deploy to Moon Prod
     runs-on: self-hosted
     env:
-      AWS_INSTANCE_SG_ID: <your-ec2-security-group-id>
+      AWS_INSTANCE_SG_ID: ${{ secrets.AWS_DEPLOY_SG_ID }}
     steps:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
