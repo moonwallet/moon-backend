@@ -39,7 +39,7 @@ if settings.ENVIRONMENT.is_deployed:
     sentry_sdk.init(
         dsn=settings.SENTRY_DSN,
         environment=settings.ENVIRONMENT,
-        profiles_sample_rate=0.2,
+        profiles_sample_rate=0.2,  # 20% of requests
     )
 
 
