@@ -29,6 +29,11 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: print runner ip
+        run: |
+          echo "Runner IP: ${{ steps.ip.outputs.ipv4 }}"
+      - name: wait for security group update
+        run: sleep 5
       - name: deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
