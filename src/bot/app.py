@@ -14,7 +14,7 @@ moon_app = ApplicationBuilder().token(moon_config.TELEGRAM_BOT_TOKEN).updater(No
 moon_app.add_error_handler(handlers.send_error_message)
 moon_app.add_handler(telegram.ext.CommandHandler("start", handlers.start))
 moon_app.add_handler(telegram.ext.CallbackQueryHandler(handlers.query_buttons))
-# moon_app.add_handler(telegram.ext.MessageHandler(telegram.ext.filters.VIDEO, handlers.echo_videos))
+moon_app.add_handler(telegram.ext.MessageHandler(telegram.ext.filters.VIDEO, handlers.echo_videos))
 # moon_app.add_handler(telegram.ext.MessageHandler(None, handlers.echo_messages))
 
 

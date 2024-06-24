@@ -7,6 +7,7 @@ from telegram.ext import CallbackContext
 
 from src.bot import service, utils
 from src.bot.config import moon_config
+from src.config import settings
 from src.database import open_db_connection
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,9 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
     if query.data == "get_referrals":
         await get_referrals(update, context)
 
+    if query.data == "referrals_explanation":
+        await send_referrals_explanation(update, context)
+
     if query.data == "delete_message":
         await context.bot.delete_message(chat_id=query.message.chat_id, message_id=query.message.message_id)
 
@@ -61,7 +65,7 @@ async def get_referrals(update: telegram.Update, context: CallbackContext) -> No
 
     await context.bot.send_photo(
         chat_id=update.effective_chat.id,
-        photo="https://cdn.dappsheriff.com/misc/moon_preview.png",
+        photo=moon_config.REFERRALS_PREVIEW_IMAGE_URL,
         reply_markup=utils.prepare_referrals_buttons(invite_link),
         parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
         caption=text,
@@ -83,6 +87,51 @@ async def refresh_user_stats(query: telegram.CallbackQuery, update: telegram.Upd
             raise
 
 
+async def send_referrals_explanation(update: telegram.Update, context: CallbackContext) -> None:
+    user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
+    invite_link = utils.prepare_invite_link(user_invite["code"])
+
+    await context.bot.send_video(
+        chat_id=update.effective_chat.id,
+        video=moon_config.REFERRAL_EXPLANATION_VIDEO_URL,
+        caption="Here is a quick video from Dima explaining how the referral system works.",
+        reply_markup=utils.prepare_referrals_explanation_buttons(invite_link),
+    )
+
+
+async def echo_videos(update: telegram.Update, context: CallbackContext) -> None:
+    if not update.effective_user.id != moon_config.ADMIN_ID:
+        return
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Video `{update.message.video.file_id}` received",
+        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
+    )
+
+
+async def echo_messages(update: telegram.Update, context: CallbackContext) -> None:
+    print(update.message.text)
+    print(update.message.chat_id)
+    print(update.message.message_thread_id)
+
+
+async def send_error_message(update: telegram.Update, context: CallbackContext) -> None:
+    if settings.ENVIRONMENT.is_deployed:
+        sentry_sdk.capture_exception(context.error)
+    else:
+        logger.exception(context.error)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        reply_to_message_id=update.effective_message.message_id,
+        text=(
+            f"Sorry, something went wrong. "
+            f"Please retry after some time or contact the developers in the chat: {moon_config.SUPPORT_CHAT_LINK}"
+        ),
+    )
+
+
 async def notify_devs(creation_data: dict[str, bool], update: telegram.Update, context: CallbackContext):
     base_text = f"*New user created:* @{update.effective_user.username}\n"
     if creation_data["used_invite"]:
@@ -100,28 +149,4 @@ async def notify_devs(creation_data: dict[str, bool], update: telegram.Update, c
         reply_to_message_id=moon_config.NOTIFICATIONS_CHAT_TOPIC_ID,
         parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
         text=base_text,
-    )
-
-
-async def echo_videos(update: telegram.Update, context: CallbackContext) -> None:
-    print(update.message.video.file_id)
-    print(update.message.video.file_unique_id)
-
-
-async def echo_messages(update: telegram.Update, context: CallbackContext) -> None:
-    print(update.message.text)
-    print(update.message.chat_id)
-    print(update.message.message_thread_id)
-
-
-async def send_error_message(update: telegram.Update, context: CallbackContext) -> None:
-    sentry_sdk.capture_exception(context.error)
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        reply_to_message_id=update.effective_message.message_id,
-        text=(
-            f"Sorry, something went wrong. "
-            f"Please retry after some time or contact the developers in the chat: {moon_config.SUPPORT_CHAT_LINK}"
-        ),
     )

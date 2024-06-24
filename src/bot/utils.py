@@ -113,6 +113,24 @@ def prepare_start_buttons() -> InlineKeyboardMarkup:
 
 def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
     buttons = [
+        [InlineKeyboardButton("How does it work?", callback_data="referrals_explanation")],
+        [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
+        [
+            InlineKeyboardButton(
+                "Share",
+                switch_inline_query=(
+                    "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n" f"{invite_link}"
+                ),
+            ),
+            InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
+        ],
+        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+    ]
+    return InlineKeyboardMarkup(buttons)
+
+
+def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMarkup:
+    buttons = [
         [
             InlineKeyboardButton(
                 "Share with Telegram Contacts",
@@ -124,7 +142,9 @@ def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
         [
             InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
         ],
-        [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
+        [
+            InlineKeyboardButton("Show statistics", callback_data="get_referrals"),
+        ],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],
     ]
 

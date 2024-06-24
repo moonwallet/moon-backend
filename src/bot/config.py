@@ -11,6 +11,9 @@ class MoonConfig(CustomBaseSettings):
     WEBHOOK_RANDOM_PATH: str = "8hUaWr3EHDasiWekc6U1KYqwANznLHrPW7"
     BOT_USERNAME: str = "moonWallet_solbot"
     START_VIDEO_URL: str
+    REFERRAL_EXPLANATION_VIDEO_URL: str
+    REFERRALS_PREVIEW_IMAGE_URL: str = "https://cdn.dappsheriff.com/misc/moon_preview.png"
+    ADMIN_ID: str = ""
 
     NOTIFICATIONS_CHAT_ID: str
     NOTIFICATIONS_CHAT_TOPIC_ID: str
