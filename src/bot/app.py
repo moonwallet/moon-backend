@@ -23,7 +23,9 @@ async def register_update(update: dict[str, Any]) -> None:
 
 
 async def set_webhook():
-    return
+    if settings.ENVIRONMENT.is_deployed:
+        return
+
     rate_limit_key = "moon:tg:webhook"
 
     await set_redis_key(
