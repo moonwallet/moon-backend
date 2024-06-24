@@ -12,6 +12,7 @@ class MoonConfig(CustomBaseSettings):
     BOT_USERNAME: str = "moonWallet_solbot"
     START_VIDEO_URL: str
     REFERRAL_EXPLANATION_VIDEO_URL: str
+    DEMO_VIDEO_URL: str
     REFERRALS_PREVIEW_IMAGE_URL: str = "https://cdn.dappsheriff.com/misc/moon_preview.png"
     ADMIN_ID: str = ""
 

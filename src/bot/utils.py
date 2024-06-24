@@ -106,6 +106,7 @@ def prepare_start_buttons() -> InlineKeyboardMarkup:
         [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
+        [InlineKeyboardButton("Tell me more about Moon", callback_data="demo_show")],
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -145,6 +146,17 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
         [
             InlineKeyboardButton("Show statistics", callback_data="get_referrals"),
         ],
+        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+    ]
+
+    return InlineKeyboardMarkup(buttons)
+
+
+def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
+    buttons = [
+        [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
+        [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
+        [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],
     ]
 

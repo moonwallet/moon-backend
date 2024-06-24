@@ -44,6 +44,9 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
     if query.data == "referrals_explanation":
         await send_referrals_explanation(update, context)
 
+    if query.data == "demo_show":
+        await send_demo_video(update, context)
+
     if query.data == "delete_message":
         await context.bot.delete_message(chat_id=query.message.chat_id, message_id=query.message.message_id)
 
@@ -96,6 +99,15 @@ async def send_referrals_explanation(update: telegram.Update, context: CallbackC
         video=moon_config.REFERRAL_EXPLANATION_VIDEO_URL,
         caption="Here is a quick video from Dima explaining how the referral system works.",
         reply_markup=utils.prepare_referrals_explanation_buttons(invite_link),
+    )
+
+
+async def send_demo_video(update: telegram.Update, context: CallbackContext) -> None:
+    await context.bot.send_video(
+        chat_id=update.effective_chat.id,
+        video=moon_config.DEMO_VIDEO_URL,
+        caption="🔥 Check out the video by Dima, where he showcases the product we're building.",
+        reply_markup=utils.prepare_send_demo_buttons(),
     )
 
 
