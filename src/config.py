@@ -28,6 +28,8 @@ class Config(CustomBaseSettings):
 
     APP_VERSION: str = "0.1"
 
+    NGROK_AUTH_TOKEN: str = ""
+
     @model_validator(mode="after")
     def validate_sentry_non_local(self) -> "Config":
         if self.ENVIRONMENT.is_deployed and not self.SENTRY_DSN:

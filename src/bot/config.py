@@ -23,9 +23,8 @@ class MoonConfig(CustomBaseSettings):
 
     SUPPORT_CHAT_LINK: str
 
-    @property
-    def moon_telegram_webhook_url(self) -> str:
-        return f"{self.WEBHOOK_DOMAIN}/tg/{self.WEBHOOK_RANDOM_PATH}/webhook"
+    def moon_telegram_webhook_url(self, domain: str) -> str:
+        return f"{domain}/tg/{self.WEBHOOK_RANDOM_PATH}/webhook"
 
 
 moon_config = MoonConfig()

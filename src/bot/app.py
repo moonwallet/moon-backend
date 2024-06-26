@@ -1,6 +1,7 @@
 from datetime import timedelta
 from typing import Any
 
+import ngrok
 import telegram
 from telegram.ext import ApplicationBuilder
 
@@ -26,6 +27,10 @@ async def set_webhook():
     if settings.ENVIRONMENT.is_deployed:
         return
 
+    ngrok.set_auth_token(settings.NGROK_AUTH_TOKEN)
+    ngrok_listener = await ngrok.default()
+    ngrok_listener.forward("0.0.0.0:8000")
+
     rate_limit_key = "moon:tg:webhook"
 
     await set_redis_key(
@@ -36,6 +41,6 @@ async def set_webhook():
         )
     )
     await moon_app.bot.set_webhook(
-        moon_config.moon_telegram_webhook_url,
+        moon_config.moon_telegram_webhook_url(ngrok_listener.url()),
         secret_token=settings.TELEGRAM_SECRET_TOKEN,
     )
