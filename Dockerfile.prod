@@ -35,7 +35,7 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
   # Install deps:
   && poetry run pip install -U pip \
   && poetry install \
-    --no-interaction --no-ansi --sync --with prod
+    --no-interaction --no-ansi --no-dev --sync --with prod
 
 COPY . .
 
