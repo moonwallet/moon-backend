@@ -103,7 +103,7 @@ def prepare_start_text() -> str:
 
 def prepare_start_buttons() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
+        [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
         [InlineKeyboardButton("Tell me more about Moon", callback_data="demo_show")],
@@ -114,19 +114,22 @@ def prepare_start_buttons() -> InlineKeyboardMarkup:
 
 def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("How does it work?", callback_data="referrals_explanation")],
-        [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
         [
             InlineKeyboardButton(
-                "Share",
+                "Share in Telegram",
                 switch_inline_query=(
                     "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n" f"{invite_link}"
                 ),
-            ),
+            )
+        ],
+        [
             InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
         ],
+        [InlineKeyboardButton("How do referrals work?", callback_data="referrals_explanation")],
+        [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],
     ]
+
     return InlineKeyboardMarkup(buttons)
 
 
@@ -134,7 +137,7 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
     buttons = [
         [
             InlineKeyboardButton(
-                "Share with Telegram Contacts",
+                "Share in Telegram",
                 switch_inline_query=(
                     "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n" f"{invite_link}"
                 ),
@@ -154,7 +157,7 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
 
 def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("🎁 Invite friends - get 50% from their fees", callback_data="get_referrals")],
+        [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],
