@@ -112,7 +112,7 @@ async def send_demo_video(update: telegram.Update, context: CallbackContext) -> 
 
 
 async def echo_videos(update: telegram.Update, context: CallbackContext) -> None:
-    if not update.effective_user.id != moon_config.ADMIN_ID:
+    if update.effective_user.id != moon_config.ADMIN_ID:
         return
 
     await context.bot.send_message(
