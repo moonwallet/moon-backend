@@ -97,8 +97,12 @@ async def send_referrals_explanation(update: telegram.Update, context: CallbackC
     await context.bot.send_video(
         chat_id=update.effective_chat.id,
         video=moon_config.REFERRAL_EXPLANATION_VIDEO_URL,
-        caption="Here is a quick video from Dima explaining how the referral system works.",
+        caption=(
+            "Here is a quick video from Dima explaining how the referral system works\\."
+            f"\n\n*Copy and share your referral link*: `{invite_link}`"
+        ),
         reply_markup=utils.prepare_referrals_explanation_buttons(invite_link),
+        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
     )
 
 
