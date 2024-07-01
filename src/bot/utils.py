@@ -106,10 +106,37 @@ def prepare_start_buttons() -> InlineKeyboardMarkup:
         [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
-        [InlineKeyboardButton("Tell me more about Moon", callback_data="demo_show")],
+        [InlineKeyboardButton("🌚 Tell me more about Moon", callback_data="demo_show")],
+        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
     ]
 
     return InlineKeyboardMarkup(buttons)
+
+
+def prepare_safety_info_buttons() -> InlineKeyboardMarkup:
+    buttons = [
+        [InlineKeyboardButton("🌚 Tell me more about Moon", callback_data="demo_show")],
+        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+    ]
+
+    return InlineKeyboardMarkup(buttons)
+
+
+def prepare_safety_info_text() -> str:
+    return (
+        "That's a good question, and here are the good reasons to trust us:\n\n"
+        "1️⃣ Our founders have open identities: [Dima](https://www\\.linkedin\\.com/in/vazhenin), "
+        "[Yera](https://www\\.linkedin\\.com/in/zhanymkanov)\n\n"
+        "2️⃣ We actively participate in Solana events: "
+        "[SolanaKZ](https://x\\.com/Rustemzzzz/status/1806381234437685634)\n\n"
+        "3️⃣ The team has a solid proof of work — previously we built [dappSheriff](https://dappsheriff\\.com), "
+        "a web3 reviews platform with over 2m reviews that was "
+        "[supported by Linea](https://x\\.com/LineaBuild/status/1760068999587471857) blockchain\\.\n\n"
+        "4️⃣ We are part of the [Backdrop](https://x.com/withBackdrop) accelerator program\\.\n\n"
+        "5️⃣ We use open\\-source APIs of Raydium & Jupiter that are proven by time and audited by the best teams\\. "
+        "The wallet itself is non\\-custodial, i\\.e\\. we do not interact with users' "
+        "funds anywhere and don't have any access to them\\.\n\n"
+    )
 
 
 def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
@@ -158,6 +185,7 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
 def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
     buttons = [
         [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
+        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
         [InlineKeyboardButton("Go Back", callback_data="delete_message")],

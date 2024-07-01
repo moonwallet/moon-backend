@@ -47,6 +47,9 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
     if query.data == "demo_show":
         await send_demo_video(update, context)
 
+    if query.data == "moon_safety":
+        await send_moon_safety_info(update, context)
+
     if query.data == "delete_message":
         await context.bot.delete_message(chat_id=query.message.chat_id, message_id=query.message.message_id)
 
@@ -112,6 +115,16 @@ async def send_demo_video(update: telegram.Update, context: CallbackContext) -> 
         video=moon_config.DEMO_VIDEO_URL,
         caption="🔥 Check out the video by Dima, where he showcases the product we're building.",
         reply_markup=utils.prepare_send_demo_buttons(),
+    )
+
+
+async def send_moon_safety_info(update: telegram.Update, context: CallbackContext) -> None:
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=utils.prepare_safety_info_text(),
+        reply_markup=utils.prepare_safety_info_buttons(),
+        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
+        disable_web_page_preview=True,
     )
 
 
