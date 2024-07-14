@@ -103,11 +103,12 @@ def prepare_start_text() -> str:
 
 def prepare_start_buttons() -> InlineKeyboardMarkup:
     buttons = [
+        [InlineKeyboardButton("🌚 Moon Points", callback_data="moon_points")],
         [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
+        [InlineKeyboardButton("💡 Tell me more about Moon", callback_data="demo_show")],
+        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
-        [InlineKeyboardButton("🌚 Tell me more about Moon", callback_data="demo_show")],
-        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -148,6 +149,9 @@ def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
                     "\nGet your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n" f"{invite_link}"
                 ),
             )
+        ],
+        [
+            InlineKeyboardButton("Connect X", callback_data="twitter_connect"),
         ],
         [
             InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),

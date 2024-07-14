@@ -9,6 +9,7 @@ from src import redis
 from src.bot.app import moon_app, set_webhook
 from src.bot.router import router as bot_router
 from src.config import app_configs, settings
+from src.oauth.router import router as oauth_router
 
 
 @asynccontextmanager
@@ -49,3 +50,4 @@ async def healthcheck() -> dict[str, str]:
 
 
 app.include_router(bot_router, tags=["bot"])
+app.include_router(oauth_router, tags=["OAuth"])
