@@ -1,3 +1,5 @@
+import logging
+
 import telegram
 from telegram.ext import CallbackContext
 
@@ -19,8 +21,10 @@ from src.bot.handlers.constants import (
 )
 from src.bot.handlers.points import get_points_task, send_points_dashboard
 from src.bot.handlers.referrals import refresh_user_stats, send_referrals_explanation
-from src.bot.handlers.start import get_referrals, send_demo_video, send_moon_safety_info
+from src.bot.handlers.start import command_start, get_referrals, send_demo_video, send_moon_safety_info
 from src.bot.handlers.twitter import send_tweet, send_tweet_referral_menu, send_twitter_redirect_uri
+
+logger = logging.getLogger(__name__)
 
 
 async def query_buttons(update: telegram.Update, context: CallbackContext) -> None:
@@ -29,37 +33,37 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
     if query.data == REFERRALS_STATS_REFRESH:
         await refresh_user_stats(query, update)
 
-    if query.data == REFERRALS_DASHBOARD:
+    elif query.data == REFERRALS_DASHBOARD:
         await get_referrals(update, context)
 
-    if query.data == REFERRALS_VIDEO_EXPLANATION:
+    elif query.data == REFERRALS_VIDEO_EXPLANATION:
         await send_referrals_explanation(update, context)
 
-    if query.data == MOON_DEMO:
+    elif query.data == MOON_DEMO:
         await send_demo_video(update, context)
 
-    if query.data == MOON_SAFETY:
+    elif query.data == MOON_SAFETY:
         await send_moon_safety_info(update, context)
 
-    if query.data == MOON_POINTS:
+    elif query.data == MOON_POINTS:
         await send_points_dashboard(update, context)
 
-    if query.data == MESSAGE_RESTORE_POINTS:
+    elif query.data == MESSAGE_RESTORE_POINTS:
         await send_points_dashboard(update, context, send_message=False)
 
-    if query.data == X_CONNECT:
+    elif query.data == X_CONNECT:
         await send_twitter_redirect_uri(update, context)
 
-    if query.data == X_TWEET_REFERRAL:
+    elif query.data == X_TWEET_REFERRAL:
         await send_tweet_referral_menu(update, context)
 
-    if query.data == X_TWEET_REFERRAL_SEND:
+    elif query.data == X_TWEET_REFERRAL_SEND:
         await send_tweet(update, context)
 
-    if query.data.startswith(MOON_POINTS_TASK):
+    elif query.data.startswith(MOON_POINTS_TASK):
         await get_points_task(update, context)
 
-    if query.data == MESSAGE_DELETE:
+    elif query.data == MESSAGE_DELETE:
         try:
             await context.bot.delete_message(chat_id=query.message.chat_id, message_id=query.message.message_id)
         except telegram.error.BadRequest as exc:
@@ -72,6 +76,9 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
                 )
             else:
                 raise
+    else:
+        logger.warning(f"Unknown callback data: {query.data}")
+        await command_start(update, context)
 
     await query.answer()
 

@@ -17,7 +17,7 @@ async def send_twitter_redirect_uri(update: telegram.Update, _: CallbackContext,
     ]
 
     oauth_data = await oauth_service.get_oauth_by_user_id(user_id)
-    if oauth_data and oauth_data['access_token']:
+    if oauth_data and oauth_data["access_token"]:
         await query.edit_message_caption(
             caption="You have already connected your Twitter account.",
             reply_markup=telegram.InlineKeyboardMarkup(tasks_buttons),
