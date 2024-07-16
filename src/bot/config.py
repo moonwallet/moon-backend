@@ -13,8 +13,8 @@ class MoonConfig(CustomBaseSettings):
     START_VIDEO_URL: str
     REFERRAL_EXPLANATION_VIDEO_URL: str
     DEMO_VIDEO_URL: str
-    REFERRALS_PREVIEW_IMAGE_URL: str = "https://d259nxs1teigry.cloudfront.net/misc/moon_preview.png"
-    IMAGE_URL_MOON_POINTS: str = "https://d259nxs1teigry.cloudfront.net/misc/moon_points_hero.png"
+    REFERRALS_PREVIEW_IMAGE_URL: str = "https://cdn.dappsheriff.com/misc/moon_preview.png"
+    IMAGE_URL_MOON_POINTS: str = "https://cdn.dappsheriff.com/misc/moon_points_hero.png"
     ADMIN_ID: str = ""
 
     NOTIFICATIONS_CHAT_ID: str
