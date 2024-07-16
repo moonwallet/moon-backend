@@ -101,12 +101,24 @@ task_completion = Table(
     "task_completion",
     metadata,
     Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
-    Column("user_tg_id", String, ForeignKey("tg_user.telegram_id"), nullable=False, unique=True),
+    Column("user_tg_id", String, ForeignKey("tg_user.telegram_id"), nullable=False),
     Column("points", Integer, nullable=False),
     Column("task_id", Integer, ForeignKey("task.id"), nullable=False),
     Column("created_at", DateTime, server_default=func.now(), nullable=False),
     Column("updated_at", DateTime, onupdate=func.now()),
     UniqueConstraint("user_tg_id", "task_id", name="points_user_tg_id_task_id_key"),
+)
+
+task_buttons = Table(
+    "task_buttons",
+    metadata,
+    Column("id", Integer, Identity(always=True, start=1, increment=1), primary_key=True),
+    Column("task_id", Integer, ForeignKey("task.id"), nullable=False),
+    Column("button_text", String, nullable=False),
+    Column("button_callback_data", String, nullable=False),
+    Column("position_order", Integer, nullable=False),
+    Column("created_at", DateTime, server_default=func.now(), nullable=False),
+    Column("updated_at", DateTime, onupdate=func.now()),
 )
 
 

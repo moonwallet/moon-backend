@@ -7,6 +7,7 @@ from telegram.ext import CallbackContext
 
 from src.bot import service
 from src.bot.config import moon_config
+from src.bot.handlers import constants as handlers_constants
 from src.bot.schemas import TgUserCreate
 
 
@@ -90,8 +91,11 @@ def prepare_referrals_stat_text(
     )
 
 
-def prepare_invite_link(invite_code: str) -> str:
-    return f"https://t.me/{moon_config.BOT_USERNAME}?start={invite_code}"
+def prepare_invite_link(invite_code: str, mark_down_safe: bool = False) -> str:
+    if not mark_down_safe:
+        return f"https://t.me/{moon_config.BOT_USERNAME}?start={invite_code}"
+
+    return f"https://t\\.me/{moon_config.BOT_USERNAME}?start\\={invite_code}"
 
 
 def prepare_start_text() -> str:
@@ -103,10 +107,9 @@ def prepare_start_text() -> str:
 
 def prepare_start_buttons() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("🌚 Moon Points", callback_data="moon_points")],
-        [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
-        [InlineKeyboardButton("💡 Tell me more about Moon", callback_data="demo_show")],
-        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
+        [InlineKeyboardButton("🌚 Moon Points", callback_data=handlers_constants.MOON_POINTS)],
+        [InlineKeyboardButton("🎁 Invite friends", callback_data=handlers_constants.REFERRALS_DASHBOARD)],
+        [InlineKeyboardButton("👀 Tell me more about Moon", callback_data=handlers_constants.MOON_DEMO)],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
     ]
@@ -116,8 +119,8 @@ def prepare_start_buttons() -> InlineKeyboardMarkup:
 
 def prepare_safety_info_buttons() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("🌚 Tell me more about Moon", callback_data="demo_show")],
-        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+        [InlineKeyboardButton("🌚 Tell me more about Moon", callback_data=handlers_constants.MOON_DEMO)],
+        [InlineKeyboardButton("Go Back", callback_data=handlers_constants.MESSAGE_DELETE)],
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -151,14 +154,14 @@ def prepare_referrals_buttons(invite_link: str) -> InlineKeyboardMarkup:
             )
         ],
         [
-            InlineKeyboardButton("Connect X", callback_data="twitter_connect"),
+            InlineKeyboardButton("Connect X", callback_data=handlers_constants.X_CONNECT),
         ],
         [
             InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
         ],
-        [InlineKeyboardButton("How do referrals work?", callback_data="referrals_explanation")],
-        [InlineKeyboardButton("Refresh statistics", callback_data="refresh_stat")],
-        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+        [InlineKeyboardButton("How do referrals work?", callback_data=handlers_constants.REFERRALS_VIDEO_EXPLANATION)],
+        [InlineKeyboardButton("Refresh statistics", callback_data=handlers_constants.REFERRALS_STATS_REFRESH)],
+        [InlineKeyboardButton("Go Back", callback_data=handlers_constants.MESSAGE_DELETE)],
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -178,9 +181,9 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
             InlineKeyboardButton("Share on X", url=_prepare_twitter_link(invite_link)),
         ],
         [
-            InlineKeyboardButton("Show statistics", callback_data="get_referrals"),
+            InlineKeyboardButton("Show statistics", callback_data=handlers_constants.REFERRALS_DASHBOARD),
         ],
-        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+        [InlineKeyboardButton("Go Back", callback_data=handlers_constants.MESSAGE_DELETE)],
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -188,11 +191,11 @@ def prepare_referrals_explanation_buttons(invite_link: str) -> InlineKeyboardMar
 
 def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton("🎁 Invite friends", callback_data="get_referrals")],
-        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data="moon_safety")],
+        [InlineKeyboardButton("🎁 Invite friends", callback_data=handlers_constants.REFERRALS_DASHBOARD)],
+        [InlineKeyboardButton("🔓 How safe is Moon?", callback_data=handlers_constants.MOON_SAFETY)],
         [InlineKeyboardButton("Join Telegram Community", url="https://t.me/moon_wallet_xyz")],
         [InlineKeyboardButton("Follow us on X", url="https://x.com/moon_wallet_xyz")],
-        [InlineKeyboardButton("Go Back", callback_data="delete_message")],
+        [InlineKeyboardButton("Go Back", callback_data=handlers_constants.MESSAGE_DELETE)],
     ]
 
     return InlineKeyboardMarkup(buttons)

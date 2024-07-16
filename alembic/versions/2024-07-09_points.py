@@ -50,12 +50,12 @@ def upgrade() -> None:
 
     op.execute(
         """
-        INSERT INTO task(name, slug, position_order, points, description)
+        INSERT INTO task(name, slug, position_order, points, description, callback_data)
         VALUES 
-            ('Claim OG points', 'claim_og', 0, 250, 'Congratulations! You have claimed your OG points. 🎉\n\nThank you for being with us, we appreciate every OG member that joined our path in trenches.'),
-            ('Connect X', 'x_connect', 1, 100, 'Click on the button below to connect your X account with Moon Wallet.'),
-            ('Share referral on X', 'x_tweet_referral', 2, 250, 'Click the button below to automatically share referral link on X.'), 
-            ('Invite friends to Moon', 'moon_invite', 3, 500, null);
+            ('Claim OG points', 'claim_og', 0, 250, 'Congratulations! You have claimed your OG points. 🎉\n\nThank you for being with us, we appreciate every OG member that joined our path in trenches.', null),
+            ('Connect X', 'x_connect', 1, 100, 'Connect your X account and earn points.', null),
+            ('Share referral on X', 'x_tweet_referral', 2, 250, 'Post a tweet with your referral and earn points just for posting!', null), 
+            ('Invite friends to Moon', 'moon_invite', 3, 500, null, 'referrals_dashboard');
         """
     )
 

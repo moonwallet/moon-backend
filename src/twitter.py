@@ -106,7 +106,7 @@ async def get_user_info(
     )
 
 
-async def tweet(oauth_data: dict[str, Any], message: str) -> None:
+async def tweet(oauth_data: dict[str, Any], message: str) -> dict[str, str]:
     client = TwitterClient(
         consumer_key=twitter_settings.CONSUMER_KEY,
         consumer_secret=twitter_settings.CONSUMER_SECRET,
@@ -114,4 +114,5 @@ async def tweet(oauth_data: dict[str, Any], message: str) -> None:
         access_token_secret=oauth_data["access_token_secret"],
     )
 
-    await client.create_tweet(text=message)
+    response = await client.create_tweet(text=message)
+    return response.data
