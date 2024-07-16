@@ -23,3 +23,21 @@ class CustomModel(BaseModel):
         default_dict = self.model_dump()
 
         return jsonable_encoder(default_dict)
+
+
+class RequestData(CustomModel):
+    user_ip: str
+    user_agent: str
+
+    @property
+    def is_bad_user_agent(self):
+        if "python" in self.user_agent.lower():
+            return True
+
+        if "axios" in self.user_agent.lower():
+            return True
+
+        if "go-http" in self.user_agent.lower():
+            return True
+
+        return False

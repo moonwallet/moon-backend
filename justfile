@@ -17,7 +17,7 @@ ruff *args:
   poetry run ruff check {{args}} src
 
 lint:
-  poetry run ruff format src
+  poetry run ruff format src alembic
   just ruff --fix
 
 # docker
