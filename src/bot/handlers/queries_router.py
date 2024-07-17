@@ -3,7 +3,7 @@ import logging
 import telegram
 from telegram.ext import CallbackContext
 
-from src.bot import service, utils
+from src.bot import service
 from src.bot.config import moon_config
 from src.bot.handlers.constants import (
     MESSAGE_DELETE,
@@ -68,12 +68,7 @@ async def query_buttons(update: telegram.Update, context: CallbackContext) -> No
             await context.bot.delete_message(chat_id=query.message.chat_id, message_id=query.message.message_id)
         except telegram.error.BadRequest as exc:
             if "Message can't be deleted for everyone" in str(exc):
-                await context.bot.send_video(
-                    chat_id=update.effective_chat.id,
-                    video=moon_config.START_VIDEO_URL,
-                    caption=utils.prepare_start_text(),
-                    reply_markup=utils.prepare_start_buttons(),
-                )
+                await command_start(update, context)
             else:
                 raise
     else:

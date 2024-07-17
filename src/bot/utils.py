@@ -100,8 +100,10 @@ def prepare_invite_link(invite_code: str, mark_down_safe: bool = False) -> str:
 
 def prepare_start_text() -> str:
     return (
-        "Welcome to Moon - Telegram wallet for Solana memecoins.\n\n"
-        "We are going live in July. Meanwhile, invite your friends to get an exclusive 🔥 50% 🔥 revenue share!"
+        "*Welcome to Moon — Telegram wallet for Solana memecoins going live in July\\.*\n\n"
+        "While you are early:\n\n"
+        "🌚 Complete tasks, earn Moon Points and increase your future rewards allocations\n\n"
+        "🎁 Invite your frens and get an exclusive 50% revenue share\n\n"
     )
 
 
@@ -203,7 +205,10 @@ def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
 
 def _prepare_twitter_link(invite_link: str) -> str:
     encoded_text = urllib.parse.quote(
-        f"Get your early access to Moon 🌚 - Telegram Wallet for Solana Memecoins:\n{invite_link}"
+        "Here is your private invite to Moon, a Telegram wallet for Solana memecoins. "
+        "Discover, analyze and trade memecoins in one place.\n\n"
+        "Get your exclusive 250 Moon Points for joining early:\n\n"
+        f"{invite_link}"
     )
 
     return f"https://twitter.com/intent/tweet?text={encoded_text}"

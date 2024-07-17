@@ -23,6 +23,7 @@ async def command_start(update: telegram.Update, context: CallbackContext):
         video=moon_config.START_VIDEO_URL,
         caption=utils.prepare_start_text(),
         reply_markup=utils.prepare_start_buttons(),
+        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
     )
 
 

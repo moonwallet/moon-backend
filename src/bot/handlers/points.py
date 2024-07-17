@@ -23,13 +23,7 @@ async def send_points_dashboard(update: telegram.Update, context: CallbackContex
     tasks_buttons.append([telegram.InlineKeyboardButton("Go Back", callback_data=handlers_constants.MESSAGE_DELETE)])
 
     total_points = await points_service.count_user_points(user_id)
-    points_text = (
-        "*Welcome to Moon Points\\!* 🌕✨\n\n"
-        "Moon Points is your gateway to understanding the Moon platform "
-        "and showcasing your valuable contributions to our vibrant community\\.\n\n"
-        f"*Total points*: {total_points['points']}\n\n"
-        "Start earning 🌚 Moon Points 🌚 by completing the following tasks:"
-    )
+    points_text = prepare_points_dashboard_text(total_points["points"])
     if send_message:
         await context.bot.send_photo(
             chat_id=update.effective_chat.id,
@@ -45,6 +39,15 @@ async def send_points_dashboard(update: telegram.Update, context: CallbackContex
             reply_markup=telegram.InlineKeyboardMarkup(tasks_buttons),
             parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
         )
+
+
+def prepare_points_dashboard_text(total_points: int) -> str:
+    return (
+        "*Welcome to Moon Points\\!* 🌕✨\n\n"
+        f"*Your Moon Points*: {total_points}\n\n"
+        "Moon Points represent your future Moon Wallet rewards allocations\\.\n\n"
+        "While we are still in stealth mode, complete the following limited tasks to earn exclusive points:"
+    )
 
 
 async def get_points_task(update: telegram.Update, context: CallbackContext):

@@ -49,16 +49,12 @@ async def send_tweet_referral_menu(update: telegram.Update, callback: CallbackCo
     user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
     invite_link = utils.prepare_invite_link(user_invite["code"], mark_down_safe=True)
 
-    text = (
-        "Share your referral link on Twitter and earn your points\\.\n\n"
-        "There is no need to struggle with text \\- we have prepared a tweet for you\\.\n\n"
-        "Just click the button below and we will automatically tweet this post for you:\n\n"
-    )
+    text = "Click the button below to post a tweet with your referral link and earn 250 points:\n\n"
 
     invite_text = (
-        ">Your private invite to Moon, a Telegram wallet for Solana memecoin Discover, "
-        "Analyze and Trade memecoins in one place\\.\n>\n"
-        ">Get your first 100 Moon Points for joining\n>\n"
+        ">Here is your private invite to Moon, a Telegram wallet for Solana memecoins\\. "
+        "Discover, analyze and trade memecoins in one place\\.\n>\n"
+        ">Get your exclusive 250 Moon Points for joining early:\n>\n"
         f">`{invite_link}`"
     )
 
@@ -78,20 +74,19 @@ async def send_tweet_referral_menu(update: telegram.Update, callback: CallbackCo
 
 async def send_tweet(update: telegram.Update, context: CallbackContext):
     user_id = str(update.effective_user.id)
+    query = update.callback_query
+
     oauth_data = await oauth_service.get_oauth_by_user_id(user_id)
-    if not oauth_data:
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="You need to connect your Twitter account first.",
-        )
+    if not oauth_data or not oauth_data["access_token"]:
+        await query.answer("To complete this task, connect you X first.")
         return
 
     user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
     invite_link = utils.prepare_invite_link(user_invite["code"])
     invite_text = (
-        "Your private invite to Moon, a Telegram wallet for Solana memecoin Discover, "
-        "Analyze and Trade memecoins in one place.\n\n"
-        "🌚 Get your first 100 Moon Points for joining\n\n"
+        "Here is your private invite to Moon, a Telegram wallet for Solana memecoins. "
+        "Discover, analyze and trade memecoins in one place.\n\n"
+        "Get your exclusive 250 Moon Points for joining early:\n\n"
         f"{invite_link}"
     )
 
@@ -108,7 +103,7 @@ async def send_tweet(update: telegram.Update, context: CallbackContext):
     query = update.callback_query
     await query.edit_message_caption(
         caption=(
-            "Awesome! Tweet was sent successfully.\n\n"
+            "Awesome! +250 Points deposited to your account 🎉\n\n"
             ""
             f"Check it out: https://x.com/{oauth_data['screen_name']}/status/{created_tweet['id']}"
         ),
