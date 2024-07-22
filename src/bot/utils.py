@@ -207,7 +207,7 @@ def prepare_send_demo_buttons() -> InlineKeyboardMarkup:
 
 def _prepare_twitter_link(invite_link: str) -> str:
     encoded_text = urllib.parse.quote(
-        "Here is your private invite to Moon, a Telegram wallet for Solana memecoins. "
+        "Here is your private invite to @moon_wallet_xyz, a Telegram wallet for Solana memecoins. "
         "Discover, analyze and trade memecoins in one place.\n\n"
         "Get your exclusive 250 Moon Points for joining early:\n\n"
         f"{invite_link}"
