@@ -10,6 +10,16 @@ from src.config import settings
 logger = logging.getLogger(__name__)
 
 
+async def echo_admin_message(update: telegram.Update, context: CallbackContext) -> None:
+    if not moon_config.ECHO_ADMIN_MSG:
+        return
+
+    if update.effective_user.id != moon_config.ADMIN_ID:
+        return
+
+    logger.info(f"Admin message: {update.to_json()}")
+
+
 async def echo_videos(update: telegram.Update, context: CallbackContext) -> None:
     if update.effective_user.id != moon_config.ADMIN_ID:
         return

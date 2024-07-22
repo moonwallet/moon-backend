@@ -9,6 +9,9 @@ from src.database import open_db_connection
 
 
 async def command_start(update: telegram.Update, context: CallbackContext):
+    if update.effective_chat.id in moon_config.NOTIFICATIONS_CHAT_IDS:
+        return
+
     db_connection = await open_db_connection()
     try:
         created = await utils.register_user(db_connection, update, context)
@@ -51,23 +54,29 @@ async def send_demo_video(update: telegram.Update, context: CallbackContext) -> 
 
 
 async def notify_devs(creation_data: dict[str, bool], update: telegram.Update, context: CallbackContext):
-    base_text = f"*New user created:* @{update.effective_user.username}\n"
+    if username := update.effective_user.username:
+        inviter_username = f"@{username}"
+    else:
+        inviter_username = "anon"
+
+    inviter_username = inviter_username.replace("_", "\\_")
+
+    base_text = f"*New user created:* {inviter_username}\n"
     if creation_data["used_invite"]:
         if creation_data.get("invited_by"):
             base_text += f"\n\\-*Invited by:* {creation_data['invited_by']}"
             if creation_data.get("total_invites"):
                 base_text += f"\n\\-*Total invitees:* {creation_data['total_invites']}"
-        if creation_data.get("self_invite"):
-            base_text += "\n\\- Tried to self\\-invite"
-        elif creation_data.get("invalid_invite"):
-            base_text += f"\n\\- Invalid invite code: {creation_data.get('invite_code')}"
 
-    await context.bot.send_message(
-        chat_id=moon_config.NOTIFICATIONS_CHAT_ID,
-        reply_to_message_id=moon_config.NOTIFICATIONS_CHAT_TOPIC_ID,
-        parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
-        text=base_text,
-    )
+            base_text += f"\n\\-*Total inviter points:* {creation_data['inviter_points']}"
+
+    for chat_id, topic_id in zip(moon_config.NOTIFICATIONS_CHAT_IDS, moon_config.NOTIFICATIONS_CHAT_TOPIC_IDS):
+        await context.bot.send_message(
+            chat_id=chat_id,
+            reply_to_message_id=topic_id,
+            parse_mode=telegram.constants.ParseMode.MARKDOWN_V2,
+            text=base_text,
+        )
 
 
 async def send_moon_safety_info(update: telegram.Update, context: CallbackContext) -> None:

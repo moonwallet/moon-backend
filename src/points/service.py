@@ -4,6 +4,7 @@ from sqlalchemy import and_, func, select
 from sqlalchemy.dialects.postgresql import aggregate_order_by, insert
 from sqlalchemy.sql.functions import coalesce
 
+from src.bot.config import moon_config
 from src.database import execute, fetch_all, fetch_one, task, task_buttons, task_completion, tg_invite, tg_invite_code
 
 
@@ -86,7 +87,9 @@ async def get_user_task(user_id: str, task_id: int) -> dict[str, Any] | None:
     return await fetch_one(select_query)
 
 
-async def count_user_points(user_id: str, points_per_invite: int = 500) -> dict[str, int] | None:
+async def count_user_points(
+    user_id: str, points_per_invite: int = moon_config.POINTS_PER_INVITE
+) -> dict[str, int] | None:
     tasks_points = (
         select(func.sum(task_completion.c.points).label("points"))
         .where(task_completion.c.user_tg_id == user_id)

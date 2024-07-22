@@ -15,12 +15,15 @@ class MoonConfig(CustomBaseSettings):
     DEMO_VIDEO_URL: str
     REFERRALS_PREVIEW_IMAGE_URL: str = "https://cdn.dappsheriff.com/misc/moon_preview.png"
     IMAGE_URL_MOON_POINTS: str = "https://cdn.dappsheriff.com/misc/moon_points_hero.png"
-    ADMIN_ID: str = ""
+    ADMIN_ID: int = ""
+    ECHO_ADMIN_MSG: bool = True
 
-    NOTIFICATIONS_CHAT_ID: str
-    NOTIFICATIONS_CHAT_TOPIC_ID: str
+    NOTIFICATIONS_CHAT_IDS: set[int]
+    NOTIFICATIONS_CHAT_TOPIC_IDS: list[int]
 
     UPDATE_USER_DATA_ON_INTERACTION: bool = True
+
+    POINTS_PER_INVITE: int = 500
 
     SUPPORT_CHAT_LINK: str
 

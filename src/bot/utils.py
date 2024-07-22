@@ -9,6 +9,7 @@ from src.bot import service
 from src.bot.config import moon_config
 from src.bot.handlers import constants as handlers_constants
 from src.bot.schemas import TgUserCreate
+from src.points import service as points_service
 
 
 async def register_user(
@@ -61,14 +62,15 @@ async def register_user(
         await service.invite_user(invite["id"], user_id, db_connection)
 
         inviter_account = await service.get_telegram_user_by_id(invite["referrer_telegram_id"], db_connection)
-        inviter_username = (
-            f"@{inviter_account['username']}" if inviter_account["username"] else invite["referrer_telegram_id"]
-        )
+        inviter_username = f"@{inviter_account['username']}" if inviter_account["username"] else "anon"
         inviter_username = inviter_username.replace("_", "\\_")
+
+        inviter_points = await points_service.count_user_points(invite["referrer_telegram_id"])
 
         return {
             "used_invite": True,
             "invited_by": inviter_username,
+            "inviter_points": inviter_points["points"],
             "total_invites": invite["count"] + 1,
         }
 
