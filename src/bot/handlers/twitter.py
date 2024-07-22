@@ -84,7 +84,7 @@ async def send_tweet(update: telegram.Update, context: CallbackContext):
     user_invite = await service.get_invite_with_count(referrer_telegram_id=str(update.effective_user.id))
     invite_link = utils.prepare_invite_link(user_invite["code"])
     invite_text = (
-        "Here is your private invite to Moon, a Telegram wallet for Solana memecoins. "
+        "Here is your private invite to @moon_wallet_xyz, a Telegram wallet for Solana memecoins. "
         "Discover, analyze and trade memecoins in one place.\n\n"
         "Get your exclusive 250 Moon Points for joining early:\n\n"
         f"{invite_link}"
