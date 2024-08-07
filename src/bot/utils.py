@@ -89,7 +89,7 @@ def prepare_referrals_stat_text(
         f"*Your referral link:* `{invite_link}`\n"
         f"*Your referrals:* {invites_count}\n\n"
         "Refer your friends and get an exclusive 🔥 50% 🔥 revenue share\\. \n\n"
-        "You'll start receiving rewards once we launch in July\\."
+        "You'll start receiving rewards once we launch in August\\."
     )
 
 
@@ -102,7 +102,7 @@ def prepare_invite_link(invite_code: str, mark_down_safe: bool = False) -> str:
 
 def prepare_start_text() -> str:
     return (
-        "*Welcome to Moon — Telegram wallet for Solana memecoins going live in July\\.*\n\n"
+        "*Welcome to Moon — Telegram wallet for Solana memecoins going live in August\\.*\n\n"
         "While you are early:\n\n"
         "🌚 Complete tasks, earn Moon Points and increase your future rewards allocations\n\n"
         "🎁 Invite your frens and get an exclusive 50% revenue share\n\n"
